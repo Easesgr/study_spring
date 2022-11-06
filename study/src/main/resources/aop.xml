@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd
+							http://www.springframework.org/schema/aop  http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<aop:aspectj-autoproxy/>
+	<bean id="logUtils" class="org.springframework.module.aop.LogUtils"></bean>
+	<bean id="myCalculator" class="org.springframework.module.aop.MyCalculator"></bean>
+	<aop:config>
+		<aop:aspect ref="logUtils">
+			<aop:pointcut id="myPoint" expression="execution(Integer org.springframework.module.aop.MyCalculator.*(..))"/>
+			<aop:around method="around" pointcut-ref="myPoint"></aop:around>
+			<aop:before method="start" pointcut-ref="myPoint"></aop:before>
+			<aop:after method="logFinally" pointcut-ref="myPoint"></aop:after>
+			<aop:after-returning method="stop" pointcut-ref="myPoint"></aop:after-returning>
+			<aop:after-returning method="logException" pointcut-ref="myPoint"></aop:after-returning>
+		</aop:aspect>
+	</aop:config>
+</beans>
