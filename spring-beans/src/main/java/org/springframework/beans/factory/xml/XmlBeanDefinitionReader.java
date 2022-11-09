@@ -393,7 +393,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		try {
 			// inputStream流转换成Document对象
 			Document doc = doLoadDocument(inputSource, resource);
-			// 将document对象进行注册，此时的document已经包含xml文件中的所有节点信息
+			// 将document解析节点并且创建BeanDefinition对象，此时的document已经包含xml文件中的所有节点信息
 			int count = registerBeanDefinitions(doc, resource);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Loaded " + count + " bean definitions from " + resource);
