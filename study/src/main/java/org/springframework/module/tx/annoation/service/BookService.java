@@ -26,9 +26,14 @@ public class BookService {
 	@Transactional
 	public void checkout(int id){
 		// 扣减库存
-		bookDao.updateStock(id);
-		for(int i = 10; i >= 0; i--){
-			int j = 10/i;
+		try {
+			bookDao.updateStock(id);
+		} catch (Exception e) {
+			// 将内层错误捕获了，还是一样会回滚
+			throw new RuntimeException(e);
 		}
+//		for(int i = 10; i >= 0; i--){
+//			int j = 10/i;
+//		}
 	}
 }

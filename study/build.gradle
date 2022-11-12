@@ -16,7 +16,6 @@ dependencies {
     implementation group: 'com.alibaba', name: 'druid', version: '1.2.4'
     // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
     implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.2.8.RELEASE'
-
     compile(project(":spring-context"))
     compile(project(":spring-beans"))
     compile(project(":spring-core"))

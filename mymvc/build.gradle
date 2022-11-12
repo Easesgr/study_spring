@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group 'com.anyi'
+version '5.2.23.BUILD-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile(project(":spring-context"))
+    compile(project(":spring-web"))
+    compile(project(":spring-webmvc"))
+    compile(project(":spring-beans"))
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}

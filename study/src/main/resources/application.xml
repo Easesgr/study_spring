@@ -7,25 +7,25 @@
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 						http://www.ease.center/schema/user http://www.ease.center/schema/user.xsd">
 	<!--	<anyi:user id="anyi" userName="zcc" email="1961740003@qq.com" password="123456"></anyi:user>-->
-<!--	<bean class="org.springframework.module.selfbfpp.MyBeanDefinitionRegisterPostProcessor"></bean>-->
+	<bean class="org.springframework.module.selfbfpp.MyBeanDefinitionRegisterPostProcessor"></bean>
 
 
 	<context:component-scan base-package="org.springframework.module"/>
-<!--	<bean id="myFactoryBean" class="org.springframework.module.myfactorybean.UserFactoryBean"></bean>-->
-<!--	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">-->
-<!--		<property name="converters">-->
-<!--			<bean class="org.springframework.module.convert.StudentConvertor"></bean>-->
-<!--		</property>-->
-<!--	</bean>-->
-<!--	<bean id="class1" class="org.springframework.module.convert.Class1">-->
-<!--		<property name="id" value="1"></property>-->
-<!--		<property name="student" value="1_anyi"></property>-->
-<!--	</bean>-->
+	<bean id="myFactoryBean" class="org.springframework.module.myfactorybean.UserFactoryBean"></bean>
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<bean class="org.springframework.module.convert.StudentConvertor"></bean>
+		</property>
+	</bean>
+	<bean id="class1" class="org.springframework.module.convert.Class1">
+		<property name="id" value="1"></property>
+		<property name="student" value="1_anyi"></property>
+	</bean>
 
-<!--	<context:property-placeholder location="classpath:db.properties"></context:property-placeholder>-->
+	<context:property-placeholder location="classpath:db.properties"></context:property-placeholder>
 
-<!--	<bean id="person" class="org.springframework.module.test.Person">-->
-<!--		<constructor-arg name="id" value="1111"></constructor-arg>-->
-<!--		<constructor-arg name="name" value="anyi"></constructor-arg>-->
-<!--	</bean>-->
+	<bean id="person" class="org.springframework.module.test.Person">
+		<constructor-arg name="id" value="1111"></constructor-arg>
+		<constructor-arg name="name" value="anyi"></constructor-arg>
+	</bean>
 </beans>
