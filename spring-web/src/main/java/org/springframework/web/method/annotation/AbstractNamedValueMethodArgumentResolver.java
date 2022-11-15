@@ -95,16 +95,16 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 	@Nullable
 	public final Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
-
+		// 获取到参数信息，名字和参数值
 		NamedValueInfo namedValueInfo = getNamedValueInfo(parameter);
 		MethodParameter nestedParameter = parameter.nestedIfOptional();
-
+		// 解析名字
 		Object resolvedName = resolveEmbeddedValuesAndExpressions(namedValueInfo.name);
 		if (resolvedName == null) {
 			throw new IllegalArgumentException(
 					"Specified name must not resolve to null: [" + namedValueInfo.name + "]");
 		}
-
+		// 通过参数名字解析出参数值
 		Object arg = resolveName(resolvedName.toString(), nestedParameter, webRequest);
 		if (arg == null) {
 			if (namedValueInfo.defaultValue != null) {
@@ -118,10 +118,12 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 		else if ("".equals(arg) && namedValueInfo.defaultValue != null) {
 			arg = resolveEmbeddedValuesAndExpressions(namedValueInfo.defaultValue);
 		}
-
+		// 使用binderFactory工厂对参数进行预处理
 		if (binderFactory != null) {
+			// 获取到对应处理WebDataBinder对象
 			WebDataBinder binder = binderFactory.createBinder(webRequest, null, namedValueInfo.name);
 			try {
+				// 对属性值进行解析
 				arg = binder.convertIfNecessary(arg, parameter.getParameterType(), parameter);
 			}
 			catch (ConversionNotSupportedException ex) {
@@ -133,9 +135,9 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 						namedValueInfo.name, parameter, ex.getCause());
 			}
 		}
-
+		// 摩尔方法，可以拓展
 		handleResolvedValue(arg, namedValueInfo.name, parameter, mavContainer, webRequest);
-
+		// 返回解析好的参数
 		return arg;
 	}
 

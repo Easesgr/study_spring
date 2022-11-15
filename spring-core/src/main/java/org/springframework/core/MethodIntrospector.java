@@ -64,23 +64,30 @@ public final class MethodIntrospector {
 			specificHandlerType = ClassUtils.getUserClass(targetType);
 			handlerTypes.add(specificHandlerType);
 		}
+		// 根据类型获取当前可以处理请求的类
 		handlerTypes.addAll(ClassUtils.getAllInterfacesForClassAsSet(targetType));
 
 		for (Class<?> currentHandlerType : handlerTypes) {
+			// 获取到类
 			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType : currentHandlerType);
 
+			// 调用方法传入两个函数式接口
 			ReflectionUtils.doWithMethods(currentHandlerType, method -> {
+				// 获取当前类中的当前方法体
 				Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
+				// 判断一下是不是@InitBinder注解修饰
 				T result = metadataLookup.inspect(specificMethod);
 				if (result != null) {
+					// 解析一下当前方法，是不是桥接方法
 					Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
+					// 当前方法不是桥接方法，加入到集合中
 					if (bridgedMethod == specificMethod || metadataLookup.inspect(bridgedMethod) == null) {
 						methodMap.put(specificMethod, result);
 					}
 				}
 			}, ReflectionUtils.USER_DECLARED_METHODS);
 		}
-
+		// 最终返回
 		return methodMap;
 	}
 
@@ -93,6 +100,7 @@ public final class MethodIntrospector {
 	 * @return the selected methods, or an empty set in case of no match
 	 */
 	public static Set<Method> selectMethods(Class<?> targetType, final ReflectionUtils.MethodFilter methodFilter) {
+		// 传入类型一个，函数式方法
 		return selectMethods(targetType,
 				(MetadataLookup<Boolean>) method -> (methodFilter.matches(method) ? Boolean.TRUE : null)).keySet();
 	}

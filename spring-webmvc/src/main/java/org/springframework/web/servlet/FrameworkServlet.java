@@ -882,12 +882,14 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		// 获取请求方式
 		HttpMethod httpMethod = HttpMethod.resolve(request.getMethod());
+		// 处理patch请求
 		if (httpMethod == HttpMethod.PATCH || httpMethod == null) {
 			processRequest(request, response);
 		}
 		else {
+			// 调用父类方法，根据不同请求调用doGet,doPost，这里tomcat来调用执行
 			super.service(request, response);
 		}
 	}
@@ -996,21 +998,28 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	protected final void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		// 所有的请求都会调用当前方法，在这个方法中进行一些基本属性值的设置
+		// 获取开始时间
 		long startTime = System.currentTimeMillis();
 		Throwable failureCause = null;
 
+		// 设置上下文对象
 		LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
 		LocaleContext localeContext = buildLocaleContext(request);
 
+		// 获取请求参数
 		RequestAttributes previousAttributes = RequestContextHolder.getRequestAttributes();
 		ServletRequestAttributes requestAttributes = buildRequestAttributes(request, response, previousAttributes);
 
+		// 获取一个同步管理器
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
 		asyncManager.registerCallableInterceptor(FrameworkServlet.class.getName(), new RequestBindingInterceptor());
 
+		// 将获取到的参数设置到request中去
 		initContextHolders(request, localeContext, requestAttributes);
 
 		try {
+			// 对应的service
 			doService(request, response);
 		}
 		catch (ServletException | IOException ex) {

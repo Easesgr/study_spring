@@ -266,6 +266,7 @@ public abstract class CommonsFileUploadSupport {
 					}
 					value = fileItem.getString();
 				}
+				// 获取所有参数
 				String[] curParam = multipartParameters.get(fileItem.getFieldName());
 				if (curParam == null) {
 					// simple form field
@@ -276,10 +277,12 @@ public abstract class CommonsFileUploadSupport {
 					String[] newParam = StringUtils.addStringToArray(curParam, value);
 					multipartParameters.put(fileItem.getFieldName(), newParam);
 				}
+				// 将解析到的值放入
 				multipartParameterContentTypes.put(fileItem.getFieldName(), fileItem.getContentType());
 			}
 			else {
 				// multipart file field
+				// 如果是文件类型，创建CommonsMultipartFile，加入到集合中返回
 				CommonsMultipartFile file = createMultipartFile(fileItem);
 				multipartFiles.add(file.getName(), file);
 				LogFormatUtils.traceDebug(logger, traceOn ->
@@ -289,6 +292,7 @@ public abstract class CommonsFileUploadSupport {
 				);
 			}
 		}
+		// 将上面的参数封装返回
 		return new MultipartParsingResult(multipartFiles, multipartParameters, multipartParameterContentTypes);
 	}
 

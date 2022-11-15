@@ -152,6 +152,7 @@ public class HandlerExecutionChain {
 					triggerAfterCompletion(request, response, null);
 					return false;
 				}
+				// 设置当前执行interceptor序号，现在是逐渐递增的，在执行post方法的时候就是递减的执行，也就是逆序
 				this.interceptorIndex = i;
 			}
 		}

@@ -63,6 +63,7 @@ public class InitBinderDataBinderFactory extends DefaultDataBinderFactory {
 	 */
 	@Override
 	public void initBinder(WebDataBinder dataBinder, NativeWebRequest request) throws Exception {
+		// 遍历所有的BinderMethod方法，判断是否可以处理
 		for (InvocableHandlerMethod binderMethod : this.binderMethods) {
 			if (isBinderMethodApplicable(binderMethod, dataBinder)) {
 				Object returnValue = binderMethod.invokeForRequest(request, null, dataBinder);

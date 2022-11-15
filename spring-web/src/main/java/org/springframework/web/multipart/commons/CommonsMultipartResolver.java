@@ -128,6 +128,7 @@ public class CommonsMultipartResolver extends CommonsFileUploadSupport
 	@Override
 	public MultipartHttpServletRequest resolveMultipart(final HttpServletRequest request) throws MultipartException {
 		Assert.notNull(request, "Request must not be null");
+		// 是否是懒加载
 		if (this.resolveLazily) {
 			return new DefaultMultipartHttpServletRequest(request) {
 				@Override
@@ -140,7 +141,9 @@ public class CommonsMultipartResolver extends CommonsFileUploadSupport
 			};
 		}
 		else {
+			// 不是懒加载，直接解析
 			MultipartParsingResult parsingResult = parseRequest(request);
+			// 将解析的结果封装成DefaultMultipartHttpServletRequest返回
 			return new DefaultMultipartHttpServletRequest(request, parsingResult.getMultipartFiles(),
 					parsingResult.getMultipartParameters(), parsingResult.getMultipartParameterContentTypes());
 		}
@@ -153,10 +156,13 @@ public class CommonsMultipartResolver extends CommonsFileUploadSupport
 	 * @throws MultipartException if multipart resolution failed.
 	 */
 	protected MultipartParsingResult parseRequest(HttpServletRequest request) throws MultipartException {
+		// 确定编码
 		String encoding = determineEncoding(request);
 		FileUpload fileUpload = prepareFileUpload(encoding);
 		try {
+			// 获取表单提交的所有属性值
 			List<FileItem> fileItems = ((ServletFileUpload) fileUpload).parseRequest(request);
+			// 将解析到的结果封装成MultipartParsingResult返回
 			return parseFileItems(fileItems, encoding);
 		}
 		catch (FileUploadBase.SizeLimitExceededException ex) {
